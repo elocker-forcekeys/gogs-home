@@ -1,0 +1,992 @@
+{{template "base/head" .}}
+<style>
+/* Styles modernes pour Gogs */
+.modern-home {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #0f172a 100%);
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+.hero-section {
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(135deg, rgba(251, 146, 60, 0.1) 0%, rgba(147, 51, 234, 0.1) 100%);
+  padding: 4rem 0;
+}
+
+.hero-content {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 2rem;
+  text-align: center;
+}
+
+.hero-logo {
+  width: 80px;
+  height: 80px;
+  background: linear-gradient(135deg, #f97316 0%, #dc2626 100%);
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 2rem;
+}
+
+.hero-title {
+  font-size: 3.5rem;
+  font-weight: 700;
+  color: white;
+  margin-bottom: 1rem;
+  line-height: 1.1;
+}
+
+.hero-subtitle {
+  font-size: 1.25rem;
+  color: #cbd5e1;
+  max-width: 600px;
+  margin: 0 auto;
+  line-height: 1.6;
+}
+
+.features-grid {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 5rem 2rem;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
+  gap: 3rem;
+}
+
+.feature-card {
+  background: rgba(30, 41, 59, 0.5);
+  backdrop-filter: blur(10px);
+  border-radius: 1rem;
+  padding: 2rem;
+  border: 1px solid rgba(71, 85, 105, 0.5);
+  transition: all 0.3s ease;
+}
+
+.feature-card:hover {
+  border-color: rgba(251, 146, 60, 0.5);
+  box-shadow: 0 25px 50px -12px rgba(251, 146, 60, 0.1);
+  transform: translateY(-2px);
+}
+
+.feature-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 1.5rem;
+}
+
+.feature-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: 0.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 1rem;
+  background: linear-gradient(135deg, #f97316 0%, #dc2626 100%);
+}
+
+.feature-icon.green {
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+}
+
+.feature-icon.purple {
+  background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%);
+}
+
+.feature-icon.cyan {
+  background: linear-gradient(135deg, #06b6d4 0%, #0891b2 100%);
+}
+
+.feature-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: white;
+  margin: 0;
+}
+
+.feature-description {
+  color: #cbd5e1;
+  font-size: 1.125rem;
+  line-height: 1.7;
+  margin: 0;
+}
+
+.feature-link {
+  color: #fb923c;
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.feature-link:hover {
+  color: #fdba74;
+}
+
+.feature-link.green {
+  color: #34d399;
+}
+
+.feature-link.green:hover {
+  color: #6ee7b7;
+}
+
+.feature-link.purple {
+  color: #a78bfa;
+}
+
+.feature-link.purple:hover {
+  color: #c4b5fd;
+}
+
+.feature-link.cyan {
+  color: #67e8f9;
+}
+
+.feature-link.cyan:hover {
+  color: #a5f3fc;
+}
+
+.additional-section {
+  background: rgba(30, 41, 59, 0.3);
+  backdrop-filter: blur(10px);
+  border-top: 1px solid rgba(71, 85, 105, 0.5);
+  padding: 4rem 0;
+}
+
+.section-content {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 2rem;
+  text-align: center;
+}
+
+.section-title {
+  font-size: 2rem;
+  font-weight: 700;
+  color: white;
+  margin-bottom: 1rem;
+}
+
+.section-subtitle {
+  font-size: 1.125rem;
+  color: #cbd5e1;
+  margin-bottom: 3rem;
+}
+
+.benefits-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 2rem;
+}
+
+.benefit-item {
+  text-align: center;
+}
+
+.benefit-icon {
+  width: 64px;
+  height: 64px;
+  background: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%);
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 1rem;
+}
+
+.benefit-title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: white;
+  margin-bottom: 0.5rem;
+}
+
+.benefit-description {
+  color: #cbd5e1;
+  line-height: 1.6;
+}
+
+.footer {
+  background: rgba(15, 23, 42, 0.8);
+  backdrop-filter: blur(10px);
+  border-top: 1px solid rgba(71, 85, 105, 0.5);
+  padding: 2rem 0;
+  text-align: center;
+  color: #94a3b8;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .hero-title {
+    font-size: 2.5rem;
+  }
+  
+  .features-grid {
+    grid-template-columns: 1fr;
+    padding: 3rem 1rem;
+  }
+  
+  .feature-card {
+    padding: 1.5rem;
+  }
+  
+  .section-content {
+    padding: 0 1rem;
+  }
+}
+
+/* SVG Icons */
+.icon-flame { fill: currentColor; }
+.icon-desktop { fill: currentColor; }
+.icon-rocket { fill: currentColor; }
+.icon-code { fill: currentColor; }
+.icon-git { fill: currentColor; }
+.icon-users { fill: currentColor; }
+.icon-shield { fill: currentColor; }
+</style>
+
+<div class="modern-home">
+  <!-- Hero Section -->
+  <div class="hero-section">
+    <div class="hero-content">
+      <div class="hero-logo">
+        <svg width="40" height="40" viewBox="0 0 24 24" class="icon-git" style="color: white;">
+          <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+        </svg>
+      </div>
+      <h1 class="hero-title">{{.i18n.Tr "app_desc"}}</h1>
+      <p class="hero-subtitle">
+        {{if eq .Lang "fr-FR"}}
+          Une solution Git self-hosted simple et puissante pour vos projets de développement. Construite par les développeurs, pour les développeurs.
+        {{else if eq .Lang "de-DE"}}
+          Eine einfache und leistungsstarke selbst gehostete Git-Lösung für Ihre Entwicklungsprojekte. Von Entwicklern für Entwickler erstellt.
+        {{else if eq .Lang "zh-CN"}}
+          为您的开发项目提供简单而强大的自托管Git解决方案。由开发者为开发者构建。
+        {{else if eq .Lang "es-ES"}}
+          Una solución Git auto-hospedada simple y potente para sus proyectos de desarrollo. Construida por desarrolladores, para desarrolladores.
+        {{else if eq .Lang "pt-BR"}}
+          Uma solução Git auto-hospedada simples e poderosa para seus projetos de desenvolvimento. Construída por desenvolvedores, para desenvolvedores.
+        {{else if eq .Lang "ru-RU"}}
+          Простое и мощное самостоятельно размещаемое Git-решение для ваших проектов разработки. Создано разработчиками для разработчиков.
+        {{else if eq .Lang "uk-UA"}}
+          Просте та потужне самостійно розміщуване Git-рішення для ваших проектів розробки. Створено розробниками для розробників.
+        {{else if eq .Lang "it-IT"}}
+          Una soluzione Git self-hosted semplice e potente per i tuoi progetti di sviluppo. Costruita da sviluppatori, per sviluppatori.
+        {{else}}
+          A simple and powerful self-hosted Git solution for your development projects. Built by developers, for developers.
+        {{end}}
+      </p>
+    </div>
+  </div>
+
+  <!-- Features Grid -->
+  <div class="features-grid">
+    {{if eq .Lang "de-DE"}}
+      <div class="feature-card">
+        <div class="feature-header">
+          <div class="feature-icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" class="icon-flame" style="color: white;">
+              <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+            </svg>
+          </div>
+          <h2 class="feature-title">Einfach zu installieren</h2>
+        </div>
+        <p class="feature-description">
+          Starte einfach <a class="feature-link" target="_blank" rel="noopener noreferrer" href="https://gogs.io/docs/installation/install_from_binary.html">die Anwendung</a> für deine Plattform. Gogs gibt es auch für <a class="feature-link" target="_blank" rel="noopener noreferrer" href="https://github.com/gogs/gogs/tree/main/docker">Docker</a>, <a class="feature-link" target="_blank" rel="noopener noreferrer" href="https://github.com/geerlingguy/ansible-vagrant-examples/tree/master/gogs">Vagrant</a> oder als <a class="feature-link" target="_blank" rel="noopener noreferrer" href="https://gogs.io/docs/installation/install_from_packages.html">Installationspaket</a>.
+        </p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-header">
+          <div class="feature-icon green">
+            <svg width="24" height="24" viewBox="0 0 24 24" class="icon-desktop" style="color: white;">
+              <path d="M4 6h16v2H4zm0 5h16v2H4zm0 5h16v2H4z"/>
+            </svg>
+          </div>
+          <h2 class="feature-title">Plattformübergreifend</h2>
+        </div>
+        <p class="feature-description">
+          Gogs läuft überall. <a class="feature-link green" target="_blank" rel="noopener noreferrer" href="http://golang.org/">Go</a> kompiliert für: Windows, macOS, Linux, ARM, etc. Wähle dasjenige System, was dir am meisten gefällt!
+        </p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-header">
+          <div class="feature-icon purple">
+            <svg width="24" height="24" viewBox="0 0 24 24" class="icon-rocket" style="color: white;">
+              <path d="M13 3c-4.97 0-9 4.03-9 9H1l3.89 3.89.07.14L9 12H6c0-3.87 3.13-7 7-7s7 3.13 7 7-3.13 7-7 7c-1.93 0-3.68-.79-4.94-2.06l-1.42 1.42C8.27 19.99 10.51 21 13 21c4.97 0 9-4.03 9-9s-4.03-9-9-9zm-1 5v5l4.28 2.54.72-1.21-3.5-2.08V8H12z"/>
+            </svg>
+          </div>
+          <h2 class="feature-title">Leichtgewicht</h2>
+        </div>
+        <p class="feature-description">
+          Gogs hat minimale Systemanforderungen und kann selbst auf einem günstigen und stromsparenden Raspberry Pi betrieben werden.
+        </p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-header">
+          <div class="feature-icon cyan">
+            <svg width="24" height="24" viewBox="0 0 24 24" class="icon-code" style="color: white;">
+              <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+            </svg>
+          </div>
+          <h2 class="feature-title">Quelloffen</h2>
+        </div>
+        <p class="feature-description">
+          Der komplette Code befindet sich auf <a class="feature-link cyan" target="_blank" rel="noopener noreferrer" href="https://github.com/gogits/gogs/">GitHub</a>! Unterstütze uns bei der Verbesserung dieses Projekts. Trau dich!
+        </p>
+      </div>
+    {{else if eq .Lang "zh-CN"}}
+      <div class="feature-card">
+        <div class="feature-header">
+          <div class="feature-icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" class="icon-flame" style="color: white;">
+              <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+            </svg>
+          </div>
+          <h2 class="feature-title">易安装</h2>
+        </div>
+        <p class="feature-description">
+          您除了可以根据操作系统平台通过 <a class="feature-link" target="_blank" rel="noopener noreferrer" href="https://gogs.io/docs/installation/install_from_binary.html">二进制运行</a>，还可以通过 <a class="feature-link" target="_blank" rel="noopener noreferrer" href="https://github.com/gogs/gogs/tree/main/docker">Docker</a> 或 <a class="feature-link" target="_blank" rel="noopener noreferrer" href="https://github.com/geerlingguy/ansible-vagrant-examples/tree/master/gogs">Vagrant</a>，以及 <a class="feature-link" target="_blank" rel="noopener noreferrer" href="https://gogs.io/docs/installation/install_from_packages.html">包管理</a> 安装。
+        </p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-header">
+          <div class="feature-icon green">
+            <svg width="24" height="24" viewBox="0 0 24 24" class="icon-desktop" style="color: white;">
+              <path d="M4 6h16v2H4zm0 5h16v2H4zm0 5h16v2H4z"/>
+            </svg>
+          </div>
+          <h2 class="feature-title">跨平台</h2>
+        </div>
+        <p class="feature-description">
+          任何 <a class="feature-link green" target="_blank" rel="noopener noreferrer" href="http://golang.org/">Go 语言</a> 支持的平台都可以运行 Gogs，包括 Windows、Mac、Linux 以及 ARM。挑一个您喜欢的就行！
+        </p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-header">
+          <div class="feature-icon purple">
+            <svg width="24" height="24" viewBox="0 0 24 24" class="icon-rocket" style="color: white;">
+              <path d="M13 3c-4.97 0-9 4.03-9 9H1l3.89 3.89.07.14L9 12H6c0-3.87 3.13-7 7-7s7 3.13 7 7-3.13 7-7 7c-1.93 0-3.68-.79-4.94-2.06l-1.42 1.42C8.27 19.99 10.51 21 13 21c4.97 0 9-4.03 9-9s-4.03-9-9-9zm-1 5v5l4.28 2.54.72-1.21-3.5-2.08V8H12z"/>
+            </svg>
+          </div>
+          <h2 class="feature-title">轻量级</h2>
+        </div>
+        <p class="feature-description">
+          一个廉价的树莓派的配置足以满足 Gogs 的最低系统硬件要求。最大程度上节省您的服务器资源！
+        </p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-header">
+          <div class="feature-icon cyan">
+            <svg width="24" height="24" viewBox="0 0 24 24" class="icon-code" style="color: white;">
+              <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+            </svg>
+          </div>
+          <h2 class="feature-title">开源化</h2>
+        </div>
+        <p class="feature-description">
+          所有的代码都开源在 <a class="feature-link cyan" target="_blank" rel="noopener noreferrer" href="https://github.com/gogits/gogs/">GitHub</a> 上，赶快加入我们来共同发展这个伟大的项目！还等什么？成为贡献者吧！
+        </p>
+      </div>
+    {{else if eq .Lang "fr-FR"}}
+      <div class="feature-card">
+        <div class="feature-header">
+          <div class="feature-icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" class="icon-flame" style="color: white;">
+              <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+            </svg>
+          </div>
+          <h2 class="feature-title">Facile à installer</h2>
+        </div>
+        <p class="feature-description">
+          Il suffit de <a class="feature-link" target="_blank" rel="noopener noreferrer" href="https://gogs.io/docs/installation/install_from_binary.html">lancer l'exécutable</a> correspondant à votre système. Ou d'utiliser Gogs avec <a class="feature-link" target="_blank" rel="noopener noreferrer" href="https://github.com/gogs/gogs/tree/main/docker">Docker</a> ou <a class="feature-link" target="_blank" rel="noopener noreferrer" href="https://github.com/geerlingguy/ansible-vagrant-examples/tree/master/gogs">Vagrant</a> ou en l'installant depuis un <a class="feature-link" target="_blank" rel="noopener noreferrer" href="https://gogs.io/docs/installation/install_from_packages.html">package</a>.
+        </p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-header">
+          <div class="feature-icon green">
+            <svg width="24" height="24" viewBox="0 0 24 24" class="icon-desktop" style="color: white;">
+              <path d="M4 6h16v2H4zm0 5h16v2H4zm0 5h16v2H4z"/>
+            </svg>
+          </div>
+          <h2 class="feature-title">Multi-plateforme</h2>
+        </div>
+        <p class="feature-description">
+          Gogs tourne partout où <a class="feature-link green" target="_blank" rel="noopener noreferrer" href="http://golang.org/">Go</a> peut être compilé : Windows, macOS, Linux, ARM, etc. Choisissez votre préféré !
+        </p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-header">
+          <div class="feature-icon purple">
+            <svg width="24" height="24" viewBox="0 0 24 24" class="icon-rocket" style="color: white;">
+              <path d="M13 3c-4.97 0-9 4.03-9 9H1l3.89 3.89.07.14L9 12H6c0-3.87 3.13-7 7-7s7 3.13 7 7-3.13 7-7 7c-1.93 0-3.68-.79-4.94-2.06l-1.42 1.42C8.27 19.99 10.51 21 13 21c4.97 0 9-4.03 9-9s-4.03-9-9-9zm-1 5v5l4.28 2.54.72-1.21-3.5-2.08V8H12z"/>
+            </svg>
+          </div>
+          <h2 class="feature-title">Léger</h2>
+        </div>
+        <p class="feature-description">
+          Gogs utilise peu de ressources. Il peut même tourner sur un Raspberry Pi très bon marché. Économisez l'énergie de vos serveurs !
+        </p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-header">
+          <div class="feature-icon cyan">
+            <svg width="24" height="24" viewBox="0 0 24 24" class="icon-code" style="color: white;">
+              <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+            </svg>
+          </div>
+          <h2 class="feature-title">Open Source</h2>
+        </div>
+        <p class="feature-description">
+          Toutes les sources sont sur <a class="feature-link cyan" target="_blank" rel="noopener noreferrer" href="https://github.com/gogits/gogs/">GitHub</a> ! Rejoignez-nous et contribuez à rendre ce projet encore meilleur.
+        </p>
+      </div>
+    {{else if eq .Lang "es-ES"}}
+      <div class="feature-card">
+        <div class="feature-header">
+          <div class="feature-icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" class="icon-flame" style="color: white;">
+              <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+            </svg>
+          </div>
+          <h2 class="feature-title">Fácil de instalar</h2>
+        </div>
+        <p class="feature-description">
+          Simplemente <a class="feature-link" target="_blank" rel="noopener noreferrer" href="https://gogs.io/docs/installation/install_from_binary.html">arranca el binario</a> para tu plataforma. O usa Gogs con <a class="feature-link" target="_blank" rel="noopener noreferrer" href="https://github.com/gogs/gogs/tree/main/docker">Docker</a> o <a class="feature-link" target="_blank" rel="noopener noreferrer" href="https://github.com/geerlingguy/ansible-vagrant-examples/tree/master/gogs">Vagrant</a>, o utilice el <a class="feature-link" target="_blank" rel="noopener noreferrer" href="https://gogs.io/docs/installation/install_from_packages.html">paquete</a>.
+        </p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-header">
+          <div class="feature-icon green">
+            <svg width="24" height="24" viewBox="0 0 24 24" class="icon-desktop" style="color: white;">
+              <path d="M4 6h16v2H4zm0 5h16v2H4zm0 5h16v2H4z"/>
+            </svg>
+          </div>
+          <h2 class="feature-title">Multiplatforma</h2>
+        </div>
+        <p class="feature-description">
+          Gogs funciona en cualquier parte, <a class="feature-link green" target="_blank" rel="noopener noreferrer" href="http://golang.org/">Go</a> puede compilarse en: Windows, macOS, Linux, ARM, etc. !Elige tu favorita!
+        </p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-header">
+          <div class="feature-icon purple">
+            <svg width="24" height="24" viewBox="0 0 24 24" class="icon-rocket" style="color: white;">
+              <path d="M13 3c-4.97 0-9 4.03-9 9H1l3.89 3.89.07.14L9 12H6c0-3.87 3.13-7 7-7s7 3.13 7 7-3.13 7-7 7c-1.93 0-3.68-.79-4.94-2.06l-1.42 1.42C8.27 19.99 10.51 21 13 21c4.97 0 9-4.03 9-9s-4.03-9-9-9zm-1 5v5l4.28 2.54.72-1.21-3.5-2.08V8H12z"/>
+            </svg>
+          </div>
+          <h2 class="feature-title">Ligero</h2>
+        </div>
+        <p class="feature-description">
+          Gogs tiene pocos requisitos y puede funcionar en una Raspberry Pi barata. !Ahorra energía!
+        </p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-header">
+          <div class="feature-icon cyan">
+            <svg width="24" height="24" viewBox="0 0 24 24" class="icon-code" style="color: white;">
+              <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+            </svg>
+          </div>
+          <h2 class="feature-title">Open Source</h2>
+        </div>
+        <p class="feature-description">
+          ¡Está todo en <a class="feature-link cyan" target="_blank" rel="noopener noreferrer" href="https://github.com/gogits/gogs/">GitHub</a>! Uniros contribuyendo a hacer este proyecto todavía mejor. ¡No seas tímido y colabora!
+        </p>
+      </div>
+    {{else if eq .Lang "pt-BR"}}
+      <div class="feature-card">
+        <div class="feature-header">
+          <div class="feature-icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" class="icon-flame" style="color: white;">
+              <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+            </svg>
+          </div>
+          <h2 class="feature-title">Fácil de instalar</h2>
+        </div>
+        <p class="feature-description">
+          Simplesmente <a class="feature-link" target="_blank" rel="noopener noreferrer" href="https://gogs.io/docs/installation/install_from_binary.html">rode o executável</a> para o seu sistema operacional. Ou obtenha o Gogs com o <a class="feature-link" target="_blank" rel="noopener noreferrer" href="https://github.com/gogs/gogs/tree/main/docker">Docker</a> ou <a class="feature-link" target="_blank" rel="noopener noreferrer" href="https://github.com/geerlingguy/ansible-vagrant-examples/tree/master/gogs">Vagrant</a>, ou baixe o <a class="feature-link" target="_blank" rel="noopener noreferrer" href="https://gogs.io/docs/installation/install_from_packages.html">pacote</a>.
+        </p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-header">
+          <div class="feature-icon green">
+            <svg width="24" height="24" viewBox="0 0 24 24" class="icon-desktop" style="color: white;">
+              <path d="M4 6h16v2H4zm0 5h16v2H4zm0 5h16v2H4z"/>
+            </svg>
+          </div>
+          <h2 class="feature-title">Multi-plataforma</h2>
+        </div>
+        <p class="feature-description">
+          Gogs roda em qualquer sistema operacional em que <a class="feature-link green" target="_blank" rel="noopener noreferrer" href="http://golang.org/">Go</a> consegue compilar: Windows, macOS, Linux, ARM, etc. Escolha qual você gosta mais!
+        </p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-header">
+          <div class="feature-icon purple">
+            <svg width="24" height="24" viewBox="0 0 24 24" class="icon-rocket" style="color: white;">
+              <path d="M13 3c-4.97 0-9 4.03-9 9H1l3.89 3.89.07.14L9 12H6c0-3.87 3.13-7 7-7s7 3.13 7 7-3.13 7-7 7c-1.93 0-3.68-.79-4.94-2.06l-1.42 1.42C8.27 19.99 10.51 21 13 21c4.97 0 9-4.03 9-9s-4.03-9-9-9zm-1 5v5l4.28 2.54.72-1.21-3.5-2.08V8H12z"/>
+            </svg>
+          </div>
+          <h2 class="feature-title">Leve e rápido</h2>
+        </div>
+        <p class="feature-description">
+          Gogs utiliza poucos recursos e consegue mesmo rodar no barato Raspberry Pi. Economize energia elétrica da sua máquina!
+        </p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-header">
+          <div class="feature-icon cyan">
+            <svg width="24" height="24" viewBox="0 0 24 24" class="icon-code" style="color: white;">
+              <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+            </svg>
+          </div>
+          <h2 class="feature-title">Código aberto</h2>
+        </div>
+        <p class="feature-description">
+          Está tudo no <a class="feature-link cyan" target="_blank" rel="noopener noreferrer" href="https://github.com/gogits/gogs/">GitHub</a>! Contribua e torne este projeto ainda melhor. Não tenha vergonha de contribuir!
+        </p>
+      </div>
+    {{else if eq .Lang "ru-RU"}}
+      <div class="feature-card">
+        <div class="feature-header">
+          <div class="feature-icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" class="icon-flame" style="color: white;">
+              <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+            </svg>
+          </div>
+          <h2 class="feature-title">Простой в установке</h2>
+        </div>
+        <p class="feature-description">
+          Просто <a class="feature-link" target="_blank" rel="noopener noreferrer" href="https://gogs.io/docs/installation/install_from_binary.html">запустите исполняемый файл</a> для вашей платформы. Используйте Gogs с <a class="feature-link" target="_blank" rel="noopener noreferrer" href="https://github.com/gogs/gogs/tree/main/docker">Docker</a> или <a class="feature-link" target="_blank" rel="noopener noreferrer" href="https://github.com/geerlingguy/ansible-vagrant-examples/tree/master/gogs">Vagrant</a>, или загрузите <a class="feature-link" target="_blank" rel="noopener noreferrer" href="https://gogs.io/docs/installation/install_from_packages.html">пакет</a>.
+        </p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-header">
+          <div class="feature-icon green">
+            <svg width="24" height="24" viewBox="0 0 24 24" class="icon-desktop" style="color: white;">
+              <path d="M4 6h16v2H4zm0 5h16v2H4zm0 5h16v2H4z"/>
+            </svg>
+          </div>
+          <h2 class="feature-title">Кроссплатформенный</h2>
+        </div>
+        <p class="feature-description">
+          Gogs работает на любой операционной системе, которая может компилировать <a class="feature-link green" target="_blank" rel="noopener noreferrer" href="http://golang.org/">Go</a>: Windows, macOS, Linux, ARM и т. д. Выбирайте, что вам больше нравится!
+        </p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-header">
+          <div class="feature-icon purple">
+            <svg width="24" height="24" viewBox="0 0 24 24" class="icon-rocket" style="color: white;">
+              <path d="M13 3c-4.97 0-9 4.03-9 9H1l3.89 3.89.07.14L9 12H6c0-3.87 3.13-7 7-7s7 3.13 7 7-3.13 7-7 7c-1.93 0-3.68-.79-4.94-2.06l-1.42 1.42C8.27 19.99 10.51 21 13 21c4.97 0 9-4.03 9-9s-4.03-9-9-9zm-1 5v5l4.28 2.54.72-1.21-3.5-2.08V8H12z"/>
+            </svg>
+          </div>
+          <h2 class="feature-title">Легковесный</h2>
+        </div>
+        <p class="feature-description">
+          Gogs имеет низкие системные требования и может работать на недорогом Raspberry Pi. Экономьте энергию вашей машины!
+        </p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-header">
+          <div class="feature-icon cyan">
+            <svg width="24" height="24" viewBox="0 0 24 24" class="icon-code" style="color: white;">
+              <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+            </svg>
+          </div>
+          <h2 class="feature-title">Открытый исходный код</h2>
+        </div>
+        <p class="feature-description">
+          Всё это на <a class="feature-link cyan" target="_blank" rel="noopener noreferrer" href="https://github.com/gogits/gogs/">GitHub</a>! Присоединяйтесь к нам, внося вклад, чтобы сделать этот проект еще лучше. Не бойтесь помогать!
+        </p>
+      </div>
+    {{else if eq .Lang "uk-UA"}}
+      <div class="feature-card">
+        <div class="feature-header">
+          <div class="feature-icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" class="icon-flame" style="color: white;">
+              <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+            </svg>
+          </div>
+          <h2 class="feature-title">Простий у втановленні</h2>
+        </div>
+        <p class="feature-description">
+          Просто <a class="feature-link" target="_blank" rel="noopener noreferrer" href="https://gogs.io/docs/installation/install_from_binary.html">запустіть виконуваний файл</a> для вашої платформи. Використовуйте Gogs с <a class="feature-link" target="_blank" rel="noopener noreferrer" href="https://github.com/gogs/gogs/tree/main/docker">Docker</a> або <a class="feature-link" target="_blank" rel="noopener noreferrer" href="https://github.com/geerlingguy/ansible-vagrant-examples/tree/master/gogs">Vagrant</a>, або завантажте <a class="feature-link" target="_blank" rel="noopener noreferrer" href="https://gogs.io/docs/installation/install_from_packages.html">пакет</a>.
+        </p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-header">
+          <div class="feature-icon green">
+            <svg width="24" height="24" viewBox="0 0 24 24" class="icon-desktop" style="color: white;">
+              <path d="M4 6h16v2H4zm0 5h16v2H4zm0 5h16v2H4z"/>
+            </svg>
+          </div>
+          <h2 class="feature-title">Кросплатформність</h2>
+        </div>
+        <p class="feature-description">
+          Gogs працює у будь-якій операційній системі, що може компілювати <a class="feature-link green" target="_blank" rel="noopener noreferrer" href="http://golang.org/">Go</a>: Windows, macOS, Linux, ARM і т. д. Обирайте що вам більше до вподоби!
+        </p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-header">
+          <div class="feature-icon purple">
+            <svg width="24" height="24" viewBox="0 0 24 24" class="icon-rocket" style="color: white;">
+              <path d="M13 3c-4.97 0-9 4.03-9 9H1l3.89 3.89.07.14L9 12H6c0-3.87 3.13-7 7-7s7 3.13 7 7-3.13 7-7 7c-1.93 0-3.68-.79-4.94-2.06l-1.42 1.42C8.27 19.99 10.51 21 13 21c4.97 0 9-4.03 9-9s-4.03-9-9-9zm-1 5v5l4.28 2.54.72-1.21-3.5-2.08V8H12z"/>
+            </svg>
+          </div>
+          <h2 class="feature-title">Легковісний</h2>
+        </div>
+        <p class="feature-description">
+          Gogs має низькі системні вимоги та може працювати на недорогому Raspberry Pi. Економте енергію вашої машини!
+        </p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-header">
+          <div class="feature-icon cyan">
+            <svg width="24" height="24" viewBox="0 0 24 24" class="icon-code" style="color: white;">
+              <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+            </svg>
+          </div>
+          <h2 class="feature-title">Відкритий сирцевий код</h2>
+        </div>
+        <p class="feature-description">
+          Все це у <a class="feature-link cyan" target="_blank" rel="noopener noreferrer" href="https://github.com/gogits/gogs/">GitHub</a>! Приєднуйтеся до нас, робіть внесок, щоб зробити цей проект ще краще. Не бійтеся допомагати!
+        </p>
+      </div>
+    {{else if eq .Lang "it-IT"}}
+      <div class="feature-card">
+        <div class="feature-header">
+          <div class="feature-icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" class="icon-flame" style="color: white;">
+              <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+            </svg>
+          </div>
+          <h2 class="feature-title">Facile da installare</h2>
+        </div>
+        <p class="feature-description">
+          Basta <a class="feature-link" target="_blank" rel="noopener noreferrer" href="https://gogs.io/docs/installation/install_from_binary.html">avviare il binario</a> per la tua piattaforma. Usa Gogs con <a class="feature-link" target="_blank" rel="noopener noreferrer" href="https://github.com/gogs/gogs/tree/main/docker">Docker</a> o <a class="feature-link" target="_blank" rel="noopener noreferrer" href="https://github.com/geerlingguy/ansible-vagrant-examples/tree/master/gogs">Vagrant</a>, o scarica il <a class="feature-link" target="_blank" rel="noopener noreferrer" href="https://gogs.io/docs/installation/install_from_packages.html">pacchetto</a>.
+        </p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-header">
+          <div class="feature-icon green">
+            <svg width="24" height="24" viewBox="0 0 24 24" class="icon-desktop" style="color: white;">
+              <path d="M4 6h16v2H4zm0 5h16v2H4zm0 5h16v2H4z"/>
+            </svg>
+          </div>
+          <h2 class="feature-title">Multipiattaforma</h2>
+        </div>
+        <p class="feature-description">
+          Gogs funziona ovunque, <a class="feature-link green" target="_blank" rel="noopener noreferrer" href="http://golang.org/">Go</a> si può compilare su: Windows, macOS, Linux, ARM, etc. Scegli il tuo preferito!
+        </p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-header">
+          <div class="feature-icon purple">
+            <svg width="24" height="24" viewBox="0 0 24 24" class="icon-rocket" style="color: white;">
+              <path d="M13 3c-4.97 0-9 4.03-9 9H1l3.89 3.89.07.14L9 12H6c0-3.87 3.13-7 7-7s7 3.13 7 7-3.13 7-7 7c-1.93 0-3.68-.79-4.94-2.06l-1.42 1.42C8.27 19.99 10.51 21 13 21c4.97 0 9-4.03 9-9s-4.03-9-9-9zm-1 5v5l4.28 2.54.72-1.21-3.5-2.08V8H12z"/>
+            </svg>
+          </div>
+          <h2 class="feature-title">Leggero</h2>
+        </div>
+        <p class="feature-description">
+          Gogs ha requisiti bassi e può funzionare su un Raspberry Pi economico. Risparmiare energia!
+        </p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-header">
+          <div class="feature-icon cyan">
+            <svg width="24" height="24" viewBox="0 0 24 24" class="icon-code" style="color: white;">
+              <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+            </svg>
+          </div>
+          <h2 class="feature-title">Open Source</h2>
+        </div>
+        <p class="feature-description">
+          Sta tutto su <a class="feature-link cyan" target="_blank" rel="noopener noreferrer" href="https://github.com/gogits/gogs/">GitHub</a>! Unisciti a noi contribuendo a rendere questo progetto ancora migliore. Non essere timido!
+        </p>
+      </div>
+    {{else}}
+      <div class="feature-card">
+        <div class="feature-header">
+          <div class="feature-icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" class="icon-flame" style="color: white;">
+              <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+            </svg>
+          </div>
+          <h2 class="feature-title">Easy to install</h2>
+        </div>
+        <p class="feature-description">
+          Simply <a class="feature-link" target="_blank" rel="noopener noreferrer" href="https://gogs.io/docs/installation/install_from_binary.html">run the binary</a> for your platform. Or ship Gogs with <a class="feature-link" target="_blank" rel="noopener noreferrer" href="https://github.com/gogs/gogs/tree/main/docker">Docker</a> or <a class="feature-link" target="_blank" rel="noopener noreferrer" href="https://github.com/geerlingguy/ansible-vagrant-examples/tree/master/gogs">Vagrant</a>, or get it <a class="feature-link" target="_blank" rel="noopener noreferrer" href="https://gogs.io/docs/installation/install_from_packages.html">packaged</a>.
+        </p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-header">
+          <div class="feature-icon green">
+            <svg width="24" height="24" viewBox="0 0 24 24" class="icon-desktop" style="color: white;">
+              <path d="M4 6h16v2H4zm0 5h16v2H4zm0 5h16v2H4z"/>
+            </svg>
+          </div>
+          <h2 class="feature-title">Cross-platform</h2>
+        </div>
+        <p class="feature-description">
+          Gogs runs anywhere <a class="feature-link green" target="_blank" rel="noopener noreferrer" href="http://golang.org/">Go</a> can compile for: Windows, macOS, Linux, ARM, etc. Choose the one you love!
+        </p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-header">
+          <div class="feature-icon purple">
+            <svg width="24" height="24" viewBox="0 0 24 24" class="icon-rocket" style="color: white;">
+              <path d="M13 3c-4.97 0-9 4.03-9 9H1l3.89 3.89.07.14L9 12H6c0-3.87 3.13-7 7-7s7 3.13 7 7-3.13 7-7 7c-1.93 0-3.68-.79-4.94-2.06l-1.42 1.42C8.27 19.99 10.51 21 13 21c4.97 0 9-4.03 9-9s-4.03-9-9-9zm-1 5v5l4.28 2.54.72-1.21-3.5-2.08V8H12z"/>
+            </svg>
+          </div>
+          <h2 class="feature-title">Lightweight</h2>
+        </div>
+        <p class="feature-description">
+          Gogs has low minimal requirements and can run on an inexpensive Raspberry Pi. Save your machine energy!
+        </p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-header">
+          <div class="feature-icon cyan">
+            <svg width="24" height="24" viewBox="0 0 24 24" class="icon-code" style="color: white;">
+              <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+            </svg>
+          </div>
+          <h2 class="feature-title">Open Source</h2>
+        </div>
+        <p class="feature-description">
+          It's all on <a class="feature-link cyan" target="_blank" rel="noopener noreferrer" href="https://github.com/gogits/gogs/">GitHub</a>! Join us by contributing to make this project even better. Don't be shy to be a contributor!
+        </p>
+      </div>
+    {{end}}
+  </div>
+
+  <!-- Additional Features Section -->
+  <div class="additional-section">
+    <div class="section-content">
+      <h2 class="section-title">
+        {{if eq .Lang "fr-FR"}}
+          Pourquoi choisir Gogs ?
+        {{else if eq .Lang "de-DE"}}
+          Warum Gogs wählen?
+        {{else if eq .Lang "zh-CN"}}
+          为什么选择 Gogs？
+        {{else if eq .Lang "es-ES"}}
+          ¿Por qué elegir Gogs?
+        {{else if eq .Lang "pt-BR"}}
+          Por que escolher Gogs?
+        {{else if eq .Lang "ru-RU"}}
+          Почему выбрать Gogs?
+        {{else if eq .Lang "uk-UA"}}
+          Чому обрати Gogs?
+        {{else if eq .Lang "it-IT"}}
+          Perché scegliere Gogs?
+        {{else}}
+          Why choose Gogs?
+        {{end}}
+      </h2>
+      <p class="section-subtitle">
+        {{if eq .Lang "fr-FR"}}
+          La solution Git self-hosted qui simplifie votre workflow de développement
+        {{else if eq .Lang "de-DE"}}
+          Die selbst gehostete Git-Lösung, die Ihren Entwicklungsworkflow vereinfacht
+        {{else if eq .Lang "zh-CN"}}
+          简化您开发工作流程的自托管Git解决方案
+        {{else if eq .Lang "es-ES"}}
+          La solución Git auto-hospedada que simplifica tu flujo de trabajo de desarrollo
+        {{else if eq .Lang "pt-BR"}}
+          A solução Git auto-hospedada que simplifica seu fluxo de trabalho de desenvolvimento
+        {{else if eq .Lang "ru-RU"}}
+          Самостоятельно размещаемое Git-решение, упрощающее ваш рабочий процесс разработки
+        {{else if eq .Lang "uk-UA"}}
+          Самостійно розміщуване Git-рішення, що спрощує ваш робочий процес розробки
+        {{else if eq .Lang "it-IT"}}
+          La soluzione Git self-hosted che semplifica il tuo flusso di lavoro di sviluppo
+        {{else}}
+          The self-hosted Git solution that simplifies your development workflow
+        {{end}}
+      </p>
+      
+      <div class="benefits-grid">
+        <div class="benefit-item">
+          <div class="benefit-icon">
+            <svg width="32" height="32" viewBox="0 0 24 24" class="icon-git" style="color: white;">
+              <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+            </svg>
+          </div>
+          <h3 class="benefit-title">
+            {{if eq .Lang "fr-FR"}}
+              Gestion de Code
+            {{else if eq .Lang "de-DE"}}
+              Code-Verwaltung
+            {{else if eq .Lang "zh-CN"}}
+              代码管理
+            {{else if eq .Lang "es-ES"}}
+              Gestión de Código
+            {{else if eq .Lang "pt-BR"}}
+              Gerenciamento de Código
+            {{else if eq .Lang "ru-RU"}}
+              Управление кодом
+            {{else if eq .Lang "uk-UA"}}
+              Управління кодом
+            {{else if eq .Lang "it-IT"}}
+              Gestione del Codice
+            {{else}}
+              Code Management
+            {{end}}
+          </h3>
+          <p class="benefit-description">
+            {{if eq .Lang "fr-FR"}}
+              Repositories Git avec interface web intuitive et fonctionnalités avancées
+            {{else if eq .Lang "de-DE"}}
+              Git-Repositories mit intuitiver Web-Oberfläche und erweiterten Funktionen
+            {{else if eq .Lang "zh-CN"}}
+              具有直观Web界面和高级功能的Git仓库
+            {{else if eq .Lang "es-ES"}}
+              Repositorios Git con interfaz web intuitiva y características avanzadas
+            {{else if eq .Lang "pt-BR"}}
+              Repositórios Git com interface web intuitiva e recursos avançados
+            {{else if eq .Lang "ru-RU"}}
+              Git-репозитории с интуитивным веб-интерфейсом и расширенными функциями
+            {{else if eq .Lang "uk-UA"}}
+              Git-репозиторії з інтуїтивним веб-інтерфейсом та розширеними функціями
+            {{else if eq .Lang "it-IT"}}
+              Repository Git con interfaccia web intuitiva e funzionalità avanzate
+            {{else}}
+              Git repositories with intuitive web interface and advanced features
+            {{end}}
+          </p>
+        </div>
+        
+        <div class="benefit-item">
+          <div class="benefit-icon">
+            <svg width="32" height="32" viewBox="0 0 24 24" class="icon-users" style="color: white;">
+              <path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/>
+            </svg>
+          </div>
+          <h3 class="benefit-title">
+            {{if eq .Lang "fr-FR"}}
+              Collaboration
+            {{else if eq .Lang "de-DE"}}
+              Zusammenarbeit
+            {{else if eq .Lang "zh-CN"}}
+              协作
+            {{else if eq .Lang "es-ES"}}
+              Colaboración
+            {{else if eq .Lang "pt-BR"}}
+              Colaboração
+            {{else if eq .Lang "ru-RU"}}
+              Сотрудничество
+            {{else if eq .Lang "uk-UA"}}
+              Співпраця
+            {{else if eq .Lang "it-IT"}}
+              Collaborazione
+            {{else}}
+              Collaboration
+            {{end}}
+          </h3>
+          <p class="benefit-description">
+            {{if eq .Lang "fr-FR"}}
+              Issues, pull requests et gestion d'équipe pour une collaboration efficace
+            {{else if eq .Lang "de-DE"}}
+              Issues, Pull-Requests und Team-Management für effektive Zusammenarbeit
+            {{else if eq .Lang "zh-CN"}}
+              问题跟踪、拉取请求和团队管理，实现高效协作
+            {{else if eq .Lang "es-ES"}}
+              Issues, pull requests y gestión de equipos para una colaboración efectiva
+            {{else if eq .Lang "pt-BR"}}
+              Issues, pull requests e gerenciamento de equipe para colaboração eficaz
+            {{else if eq .Lang "ru-RU"}}
+              Issues, pull requests и управление командой для эффективного сотрудничества
+            {{else if eq .Lang "uk-UA"}}
+              Issues, pull requests та управління командою для ефективної співпраці
+            {{else if eq .Lang "it-IT"}}
+              Issues, pull request e gestione del team per una collaborazione efficace
+            {{else}}
+              Issues, pull requests and team management for effective collaboration
+            {{end}}
+          </p>
+        </div>
+        
+        <div class="benefit-item">
+          <div class="benefit-icon">
+            <svg width="32" height="32" viewBox="0 0 24 24" class="icon-shield" style="color: white;">
+              <path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4z"/>
+            </svg>
+          </div>
+          <h3 class="benefit-title">
+            {{if eq .Lang "fr-FR"}}
+              Contrôle Total
+            {{else if eq .Lang "de-DE"}}
+              Vollständige Kontrolle
+            {{else if eq .Lang "zh-CN"}}
+              完全控制
+            {{else if eq .Lang "es-ES"}}
+              Control Total
+            {{else if eq .Lang "pt-BR"}}
+              Controle Total
+            {{else if eq .Lang "ru-RU"}}
+              Полный контроль
+            {{else if eq .Lang "uk-UA"}}
+              Повний контроль
+            {{else if eq .Lang "it-IT"}}
+              Controllo Totale
+            {{else}}
+              Total Control
+            {{end}}
+          </h3>
+          <p class="benefit-description">
+            {{if eq .Lang "fr-FR"}}
+              Hébergement self-hosted avec contrôle complet de vos données et configurations
+            {{else if eq .Lang "de-DE"}}
+              Self-hosted Hosting mit vollständiger Kontrolle über Ihre Daten und Konfigurationen
+            {{else if eq .Lang "zh-CN"}}
+              自托管部署，完全控制您的数据和配置
+            {{else if eq .Lang "es-ES"}}
+              Hosting auto-hospedado con control completo de sus datos y configuraciones
+            {{else if eq .Lang "pt-BR"}}
+              Hospedagem auto-hospedada com controle completo de seus dados e configurações
+            {{else if eq .Lang "ru-RU"}}
+              Самостоятельный хостинг с полным контролем над вашими данными и конфигурациями
+            {{else if eq .Lang "uk-UA"}}
+              Самостійний хостинг з повним контролем над вашими даними та конфігураціями
+            {{else if eq .Lang "it-IT"}}
+              Hosting self-hosted con controllo completo dei tuoi dati e configurazioni
+            {{else}}
+              Self-hosted hosting with complete control of your data and configurations
+            {{end}}
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <p>
+      {{if eq .Lang "fr-FR"}}
+        © 2024 Gogs Git Repository Server. Propulsé par la communauté open source.
+      {{else if eq .Lang "de-DE"}}
+        © 2024 Gogs Git Repository Server. Angetrieben von der Open-Source-Community.
+      {{else if eq .Lang "zh-CN"}}
+        © 2024 Gogs Git Repository Server. 由开源社区驱动。
+      {{else if eq .Lang "es-ES"}}
+        © 2024 Gogs Git Repository Server. Impulsado por la comunidad de código abierto.
+      {{else if eq .Lang "pt-BR"}}
+        © 2024 Gogs Git Repository Server. Impulsionado pela comunidade de código aberto.
+      {{else if eq .Lang "ru-RU"}}
+        © 2024 Gogs Git Repository Server. Работает на основе сообщества открытого исходного кода.
+      {{else if eq .Lang "uk-UA"}}
+        © 2024 Gogs Git Repository Server. Працює на основі спільноти відкритого коду.
+      {{else if eq .Lang "it-IT"}}
+        © 2024 Gogs Git Repository Server. Alimentato dalla comunità open source.
+      {{else}}
+        © 2024 Gogs Git Repository Server. Powered by the open source community.
+      {{end}}
+    </p>
+  </footer>
+</div>
+{{template "base/footer" .}}
